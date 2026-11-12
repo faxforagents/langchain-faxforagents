@@ -13,6 +13,7 @@
   <a href="https://faxforagents.com/docs/sdks/">SDKs</a> ·
   <a href="https://faxforagents.com/mcp/">MCP</a> ·
   <a href="https://app.faxforagents.com">Dashboard</a> ·
+  <a href="https://faxforagents.com/pricing/">Pricing</a> ·
   <a href="https://faxforagents.com/changelog/">Changelog</a>
 </p>
 
@@ -41,7 +42,7 @@ pip install langchain-faxforagents
 ```
 
 Python 3.10 or later is required.
-Dependencies are `langchain-core>=1.7.4,<2`, `faxforagents>=0.2.3,<0.3`, and `pydantic>=2.7.4,<3`.
+Dependencies are `langchain-core>=1.7.4,<2`, `faxforagents>=0.2.3,<0.5`, and `pydantic>=2.7.4,<3`.
 The package uses `BaseTool` and `BaseToolkit` from LangChain's current major version.
 
 ## Sandbox quickstart
