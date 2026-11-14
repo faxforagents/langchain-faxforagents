@@ -43,7 +43,7 @@ pip install langchain-faxforagents
 ```
 
 Python 3.10 or later is required.
-Dependencies are `langchain-core>=1.7.4,<2`, `faxforagents>=0.2.3,<0.5`, and `pydantic>=2.7.4,<3`.
+Dependencies are `langchain-core>=1.7.4,<2`, `faxforagents>=0.2.3,<0.7`, and `pydantic>=2.7.4,<3`.
 The package uses `BaseTool` and `BaseToolkit` from LangChain's current major version.
 
 ## Sandbox quickstart
@@ -138,6 +138,9 @@ The tool list has no aliases for `prepare_fax_document`, `send_fax`, `get_balanc
 | `list_inbox` | `inbox.list` |
 | `read_inbound_fax` | `inbox.get` |
 | `extract_fax_data` | `extractions.create` |
+
+The [hosted MCP server](https://faxforagents.com/mcp/) lists 17 tools.
+Its two card tools, `request_card_payment` and `get_card_payment_status`, are not in this package.
 
 Individual classes are available from `langchain_faxforagents.tools`, including `PrepareFaxTool` and `SendApprovedFaxTool`.
 Preparation requires exactly one of `text`, `markdown`, `html`, or a completed `upload_id`.
