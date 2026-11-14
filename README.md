@@ -56,15 +56,18 @@ Use an `ffa_test_` credential. Sandbox mode rejects other credentials before con
 The free destination `+15550000001` simulates delivery without contacting a carrier.
 
 This example prepares a document and creates a quote. It does not send.
-Persist the operation ID and reuse it when retrying the same operation.
+It makes a new operation ID on each run, so it can be run again.
+In your own code, persist the operation ID and reuse it when retrying the same operation.
 Use a new operation ID for a new document or destination.
 
 ```python
+import uuid
+
 from langchain_faxforagents import FaxForAgentsToolkit
 
 kit = FaxForAgentsToolkit(sandbox=True)
 tools = {tool.name: tool for tool in kit.get_tools()}
-operation = "sandbox-example-001"
+operation = f"sandbox-example-{uuid.uuid4().hex[:8]}"  # new idempotency keys on every run
 
 prepared = tools["prepare_fax"].invoke({
     "text": "Sandbox fax example",
