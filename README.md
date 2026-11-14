@@ -23,10 +23,10 @@
 
   <a href="https://www.python.org"><img src="https://img.shields.io/badge/python-3.10%2B-3776ab" alt="Python 3.10+"></a>
 
-  <a href="https://reference.langchain.com/python/langchain-core/tools/base/BaseTool"><img src="https://img.shields.io/badge/LangChain-15%20tools-6b4fbb" alt="15 LangChain tools"></a>
+  <a href="https://reference.langchain.com/python/langchain-core/tools/base/BaseTool"><img src="https://img.shields.io/badge/LangChain-17%20tools-6b4fbb" alt="17 LangChain tools"></a>
 </p>
 
-Use 15 LangChain tools through the [Fax for Agents Python SDK](https://github.com/faxforagents/sdk-python).
+Use 17 LangChain tools through the [Fax for Agents Python SDK](https://github.com/faxforagents/sdk-python).
 Fax for Agents is made by JSB Holdings LLC.
 This package is prepared for publication. It has not been published to PyPI.
 
@@ -90,9 +90,11 @@ Async tools use `faxforagents.AsyncClient` directly.
 
 ## Approval and retry rules
 
-Only `send_approved_fax` sends a fax.
+Only `send_approved_fax` sends a fax from the wallet.
+`request_card_payment` opens a card order that sends the fax once a person has paid.
 Every send requires a quote ID and a caller-supplied idempotency key.
 Every live send also requires an approval ID, even when the service permits a delegated policy.
+A live card order requires the same approval ID.
 Live mode requires explicit `sandbox=False` configuration.
 The tool description preserves canonical wording. This package applies the stricter approval rule above.
 
@@ -133,14 +135,43 @@ The tool list has no aliases for `prepare_fax_document`, `send_fax`, `get_balanc
 | `list_faxes` | `faxes.list` |
 | `get_fax_balance` | `billing.balance` |
 | `cancel_fax` | `faxes.cancel` |
+| `request_card_payment` | `one_time_sends.create_from_quote` |
+| `get_card_payment_status` | `one_time_sends.get`, then `faxes.list_attempts` once the fax exists |
 | `request_human_review` | `approvals.request` or `approvals.request_help` |
 | `get_review_status` | `approvals.get` |
 | `list_inbox` | `inbox.list` |
 | `read_inbound_fax` | `inbox.get` |
 | `extract_fax_data` | `extractions.create` |
 
-The [hosted MCP server](https://faxforagents.com/mcp/) lists 17 tools.
-Its two card tools, `request_card_payment` and `get_card_payment_status`, are not in this package.
+The [hosted MCP server](https://faxforagents.com/mcp/) lists the same 17 tools at API 1.20.3.
+Its annotations mark `send_approved_fax` and `cancel_fax` as destructive.
+LangChain tools carry no annotation field, so the shipped `tool-definitions.json` keeps them for hosts that read it.
+
+`quote_fax` takes `quality`, `sender_name`, `from_number` and `delete_after_send`.
+`list_faxes` takes `idempotency_key` as a filter that finds the send made with that key.
+Those arguments and the two card tools need a newer SDK than the lowest one this package accepts.
+The quote options and the filter need `faxforagents` 0.4.0. The card tools need 0.4.1.
+With an older SDK the tool answers `sdk_upgrade_required` and sends no request.
+
+## Card payment
+
+`request_card_payment` asks a person to pay for one quoted fax by card, with no wallet balance.
+It takes `quote_id`, `cover_from_name` and an `idempotency_key`, plus optional `approval_id`, `email` and `delete_after_send`.
+The result holds `data.one_time_send` and `data.status_url`.
+Give `status_url` to the person. They accept the terms and pay by card on that hosted page.
+No tool in this package takes or handles card details, and no tool can pay.
+Nothing is sent or charged until the person pays.
+The card is charged only for pages the carrier reports as arrived.
+
+`get_card_payment_status` reads the order by `order_id`.
+`data.one_time_send.next` is `checkout`, `confirm`, `wait` or `done`.
+`data.status_url` is set only while a person still has to pay or confirm.
+Once the fax is released, `data.fax` and `data.attempts` carry its delivery state and carrier evidence.
+The order's status token, the payer's email address and the order's card field are left out of both results.
+
+Card orders need a live credential and `sandbox=False`. The API refuses a test credential.
+They cover the United States and Canada, within the page limit that `get_fax_capabilities` reports under `one_time`.
+See the [one-time send guide](https://faxforagents.com/docs/one-time-send/) for the payment flow.
 
 Individual classes are available from `langchain_faxforagents.tools`, including `PrepareFaxTool` and `SendApprovedFaxTool`.
 Preparation requires exactly one of `text`, `markdown`, `html`, or a completed `upload_id`.
