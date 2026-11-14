@@ -28,15 +28,17 @@
 
 Use 17 LangChain tools through the [Fax for Agents Python SDK](https://github.com/faxforagents/sdk-python).
 Fax for Agents is made by JSB Holdings LLC.
-This package is prepared for publication. It has not been published to PyPI.
+This README describes version 0.2.0.
+[PyPI](https://pypi.org/project/langchain-faxforagents/) had version 0.1.0 on 2026-11-14, with 15 tools and an SDK range below 0.3.
+Check there for the current release.
 
-Install the local checkout now.
+Install the local checkout to use this version before its release.
 
 ```bash
 uv sync --extra examples
 ```
 
-After publication, install the package with this command.
+This command installs the published release.
 
 ```bash
 pip install langchain-faxforagents
