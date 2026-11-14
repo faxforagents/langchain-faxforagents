@@ -285,7 +285,7 @@ INVALID = [
     ("get_fax_balance", {"api_key": LIVE_KEY}),
     (
         "quote_fax",
-        {"document_id": DOC, "to": "+15550000001", "quality": "best", **{"idempotency_key": KEY}},
+        {"document_id": DOC, "to": "+15550000001", "quality": "best", "idempotency_key": KEY},
     ),
     (
         "quote_fax",
