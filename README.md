@@ -19,6 +19,8 @@
 </p>
 
 <p align="center">
+  <a href="https://github.com/faxforagents/langchain-faxforagents/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/faxforagents/langchain-faxforagents/ci.yml?branch=main&label=ci" alt="CI"></a>
+
   <a href="LICENSE"><img src="https://img.shields.io/badge/licence-MIT-1f6feb" alt="MIT licence"></a>
 
   <a href="https://www.python.org"><img src="https://img.shields.io/badge/python-3.10%2B-3776ab" alt="Python 3.10+"></a>
@@ -232,6 +234,7 @@ uv run --extra examples pytest -q tests/test_examples.py
 uv build
 ```
 
+CI runs these checks with Python 3.10 and 3.14 on every push to main and on each pull request.
 Tests use fake clients, mock HTTP, and scripted model responses.
 They do not contact the fax service or a model provider.
 Publication and authenticated sandbox checks remain operator steps.
