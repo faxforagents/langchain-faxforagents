@@ -47,7 +47,7 @@ pip install langchain-faxforagents
 ```
 
 Python 3.10 or later is required.
-Dependencies are `langchain-core>=1.7.4,<2`, `faxforagents>=0.2.3,<0.7`, and `pydantic>=2.7.4,<3`.
+Dependencies are `langchain-core>=1.7.4,<2`, `faxforagents>=0.11.2,<0.12`, and `pydantic>=2.7.4,<3`.
 The package uses `BaseTool` and `BaseToolkit` from LangChain's current major version.
 
 ## Sandbox quickstart
@@ -156,9 +156,8 @@ LangChain tools carry no annotation field, so the shipped `tool-definitions.json
 
 `quote_fax` takes `quality`, `sender_name`, `from_number` and `delete_after_send`.
 `list_faxes` takes `idempotency_key` as a filter that finds the send made with that key.
-Those arguments and the two card tools need a newer SDK than the lowest one this package accepts.
-The quote options and the filter need `faxforagents` 0.4.0. The card tools need 0.4.1.
-With an older SDK the tool answers `sdk_upgrade_required` and sends no request.
+Every SDK version this package accepts has those arguments and the two card calls.
+If an older SDK is installed anyway, the tool answers `sdk_upgrade_required` and sends no request.
 
 ## Card payment
 

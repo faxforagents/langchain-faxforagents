@@ -26,7 +26,7 @@ classifiers = [
 ]
 dependencies = [
   "langchain-core>=1.7.4,<2",
-  "faxforagents>=0.2.3,<0.7",
+  "faxforagents>=0.11.2,<0.12",
   "pydantic>=2.7.4,<3",
 ]
 
